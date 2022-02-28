@@ -34,19 +34,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: Check signature
-        run: |
-          releasever=${{ github.ref }}
-          releasever="${releasever#refs/tags/}"
-          tagcheck=$(git tag -v ${releasever} 2>&1 >/dev/null) ||
-          echo "${tagcheck}" | grep -q "error" && {
-              echo "::error::tag ${releasever} is not a signed tag. Failing release process."
-              exit 1
-          } || {
-              echo "Tag ${releasever} is signed."
-              exit 0
-          }
-
       - name: Release content
         id: contentrel
         run: |
@@ -70,8 +57,6 @@ jobs:
     strategy:
       matrix:
         include:
-        - arch: amd64
-          platform: linux/amd64
         - arch: arm32v7
           platform: linux/arm/v7
       
