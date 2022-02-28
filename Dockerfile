@@ -126,7 +126,6 @@ RUN --mount=type=cache,sharing=locked,id=moby-cross-false-aptlib,target=/var/lib
             binutils-mingw-w64 \
             g++-mingw-w64-x86-64 \
             libapparmor-dev \
-            libbtrfs-dev \
             libdevmapper-dev \
             libseccomp-dev/buster-backports \
             libsystemd-dev \
@@ -165,12 +164,6 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=bind,src=hack/dockerfile/install,target=/tmp/install \
         PREFIX=/build /tmp/install/install.sh vndr
 
-FROM dev-base AS containerd
-ARG DEBIAN_FRONTEND
-RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
-        apt-get update && apt-get install -y --no-install-recommends \
-            libbtrfs-dev
 ARG CONTAINERD_VERSION
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
