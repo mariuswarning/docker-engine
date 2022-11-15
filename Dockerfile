@@ -170,12 +170,11 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 FROM dev-base AS containerd
 ARG DEBIAN_FRONTEND
+RUN printf "deb http://deb.debian.org/debian bullseye-backports main" \
+    > /etc/apt/sources.list.d/backports.list
 RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
-        apt-get update \
-        && apt-get install software-properties-common \
-        && add-apt-repository deb http://security.debian.org/ bullseye-security/updates main contrib non-free\
-        && apt-get install -y --no-install-recommends \
+        apt-get update && apt-get install -y --no-install-recommends \
             libbtrfs-dev
 ARG CONTAINERD_VERSION
 RUN --mount=type=cache,target=/root/.cache/go-build \
