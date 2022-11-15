@@ -170,7 +170,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 FROM dev-base AS containerd
 ARG DEBIAN_FRONTEND
-RUN printf "deb http://deb.debian.org/debian bullseye-backports main" \
+RUN printf "deb http://ftp.debian.org/debian stretch-backports main contrib\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib" \
     > /etc/apt/sources.list.d/backports.list
 RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
