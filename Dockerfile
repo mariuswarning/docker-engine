@@ -177,16 +177,18 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
         PREFIX=/build /tmp/install/install.sh vndr
 
 FROM dev-base AS containerd
-ARG DEBIAN_FRONTEND
-RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
-    --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \    
+ARG DEBIAN_FRONTEND 
         printf "deb http://deb.debian.org/debian bullseye main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye main contrib non-free\ndeb http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb http://security.debian.org/debian-security/ bullseye-security main contrib non-free\ndeb-src http://security.debian.org/debian-security/ bullseye-security main contrib non-free" \
             > /etc/apt/sources.list.d/backports.list \
         && printf "deb http://ftp.debian.org/debian stretch-backports main contrib non-free\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib non-free" \
             > /etc/apt/sources.list.d/backports.list
 RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
-        apt-get update && apt-get install -y --no-install-recommends \
+        printf "deb http://deb.debian.org/debian bullseye main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye main contrib non-free\ndeb http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb http://security.debian.org/debian-security/ bullseye-security main contrib non-free\ndeb-src http://security.debian.org/debian-security/ bullseye-security main contrib non-free" \
+            > /etc/apt/sources.list.d/backports.list \
+        && printf "deb http://ftp.debian.org/debian stretch-backports main contrib non-free\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib non-free" \
+            > /etc/apt/sources.list.d/backports.list \
+        && apt-get update && apt-get install -y --no-install-recommends \
             libbtrfs-dev=5.10.1-2
 ARG CONTAINERD_VERSION
 RUN --mount=type=cache,target=/root/.cache/go-build \
