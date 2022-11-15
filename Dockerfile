@@ -16,8 +16,6 @@ RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.con
 ARG APT_MIRROR
 RUN sed -ri "s/(httpredir|deb).debian.org/${APT_MIRROR:-deb.debian.org}/g" /etc/apt/sources.list \
  && sed -ri "s/(security).debian.org/${APT_MIRROR:-security.debian.org}/g" /etc/apt/sources.list \
- && printf "deb http://deb.debian.org/debian bullseye main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye main contrib non-free\ndeb http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-updates main contrib non-free\ndeb http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb-src http://deb.debian.org/debian bullseye-backports main contrib non-free\ndeb http://security.debian.org/debian-security/ bullseye-security main contrib non-free\ndeb-src http://security.debian.org/debian-security/ bullseye-security main contrib non-free" \
-    > /etc/apt/sources.list.d/backports.list \
  && printf "deb http://ftp.debian.org/debian stretch-backports main contrib non-free\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib non-free" \
     > /etc/apt/sources.list.d/backports.list
 ENV GO111MODULE=off
@@ -132,7 +130,7 @@ RUN --mount=type=cache,sharing=locked,id=moby-cross-false-aptlib,target=/var/lib
             binutils-mingw-w64 \
             g++-mingw-w64-x86-64 \
             libapparmor-dev \
-            libbtrfs-dev \
+            libbtrfs-dev=5.10.1-2 \
             libdevmapper-dev \
             libseccomp-dev \
             libsystemd-dev \
@@ -177,7 +175,7 @@ ARG DEBIAN_FRONTEND
 RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
         apt-get update && apt-get install -y --no-install-recommends \
-            libbtrfs-dev
+            libbtrfs-dev=5.10.1-2
 ARG CONTAINERD_VERSION
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
