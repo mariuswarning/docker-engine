@@ -61,11 +61,7 @@ else
 	echo >&2 '  Please either build with the .git directory accessible, or specify the'
 	echo >&2 '  exact (--short) commit hash you are building using DOCKER_GITCOMMIT for'
 	echo >&2 '  future accountability in diagnosing build issues.  Thanks!'
-	echo 'error: .git directory missing and DOCKER_GITCOMMIT not specified'
-	echo '  Please either build with the .git directory accessible, or specify the'
-	echo '  exact (--short) commit hash you are building using DOCKER_GITCOMMIT for'
-	echo '  future accountability in diagnosing build issues.  Thanks!'
-	exit 1
+	exit 50
 fi
 
 if [ "$AUTO_GOPATH" ]; then
@@ -78,9 +74,7 @@ fi
 if [ ! "$GOPATH" ]; then
 	echo >&2 'error: missing GOPATH; please see https://golang.org/doc/code.html#GOPATH'
 	echo >&2 '  alternatively, set AUTO_GOPATH=1'
-	echo 'error: missing GOPATH; please see https://golang.org/doc/code.html#GOPATH'
-	echo '  alternatively, set AUTO_GOPATH=1'
-	exit 1
+	exit 51
 fi
 
 # Adds $1_$2 to DOCKER_BUILDTAGS unless it already
