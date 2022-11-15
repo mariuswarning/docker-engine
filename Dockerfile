@@ -170,9 +170,9 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 FROM dev-base AS containerd
 ARG DEBIAN_FRONTEND
-RUN printf "deb http://ftp.debian.org/debian stretch-backports main contrib\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib" \
-    > /etc/apt/sources.list.d/backports.list \
-    && --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
+RUN printf "deb http://ftp.debian.org/debian stretch-backports main contrib non-free\ndeb-src http://ftp.debian.org/debian stretch-backports main contrib non-free" \
+    > /etc/apt/sources.list.d/backports.list
+RUN --mount=type=cache,sharing=locked,id=moby-containerd-aptlib,target=/var/lib/apt \
     --mount=type=cache,sharing=locked,id=moby-containerd-aptcache,target=/var/cache/apt \
         apt-get update && apt-get install -y --no-install-recommends \
             libbtrfs-dev
