@@ -27,13 +27,7 @@ install_containerd() (
 	export EXTRA_FLAGS=${GO_BUILDMODE}
 	export EXTRA_LDFLAGS='-extldflags "-fno-PIC -static"'
 
-	# Reset build flags to nothing if we want a dynbinary
-	if [ "$1" = "dynamic" ]; then
-		export BUILDTAGS=''
-		export EXTRA_FLAGS=''
-		export EXTRA_LDFLAGS=''
-	fi
-	make
+	make STATIC=1
 
 	install -D bin/containerd "${PREFIX}/containerd"
 	install -D bin/containerd-shim "${PREFIX}/containerd-shim"
