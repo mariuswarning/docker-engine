@@ -5,11 +5,11 @@ on:
   push:
     branches:
       - master
-      - 'release/**'
+      - 'feature/**'
   pull_request:
     branches: 
       - master
-      - 'release/**'
+      - 'feature/**'
 
 env:
   PLATFORM: Docker Engine - WAGO (Community)
